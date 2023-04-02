@@ -1,4 +1,4 @@
-#include <stdio.h>
+ #include <stdio.h>
 
 #define MAX_ROWS 50
 #define MAX_COLS 50
@@ -30,7 +30,7 @@ int main() {
                 min_in_row = matrix[i][j];
             }
         }
-        for (j = 0; j < n; j++) {
+        for (j = 0; j < n; j ++) {
             if (matrix[i][j] == min_in_row) {
                 // check if min_in_row is also the max in the column
                 max_in_col = matrix[0][j];
