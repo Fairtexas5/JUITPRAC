@@ -44,7 +44,7 @@ void deleteNode(struct Node** head_ref, int key)
         temp = temp->next;
     }
 
-    // If key was not present in linked list
+    // If key was not present in linked list 
     if (temp == NULL) return;
 
     // Unlink the Node from linked list
@@ -87,3 +87,4 @@ int main() {
 
     return 0;
 }
+ 

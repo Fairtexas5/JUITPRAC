@@ -1,40 +1,44 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-typedef struct node {
+// define a structure for linked list node
+struct node {
     int data;
     struct node* next;
-} Node;
+};
+
+// function to insert a node at the beginning of the list
+void insertNodeAtBeginning(struct node** head_ref, int new_data) {
+    // create a new node and allocate memory
+    struct node* new_node = (struct node*)malloc(sizeof(struct node));
+    // assign the data to new node
+    new_node->data = new_data;
+    // assign the next pointer of new node to the head of the list
+    new_node->next = (*head_ref);
+    // update the head to point to the new node
+    (*head_ref) = new_node;
+}
+
+// function to print the linked list
+void printList(struct node* node) {
+    while(node != NULL) {
+        printf("%d -> ", node->data);
+        node = node->next;
+    }
+    printf("NULL\n");
+}
 
 int main() {
-    Node* head = NULL;
-    Node* current = NULL;
-    int sum = 0;
-
-    // create linked list
-    for (int i = 1; i <= 10; i++) {
-        Node* new_node = (Node*) malloc(sizeof(Node));
-        new_node->data = i;
-        new_node->next = NULL;
-
-        if (head == NULL) {
-            head = new_node;
-            current = head;
-        } else {
-            current->next = new_node;
-            current = new_node;
-        }
+    struct node* head = NULL; // initialize an empty list
+    int n, num;
+    printf("Enter the number of elements in the list: ");
+    scanf("%d", &n);
+    for(int i=0; i<n; i++) {
+        printf("Enter element %d: ", i+1);
+        scanf("%d", &num);
+        insertNodeAtBeginning(&head, num);
     }
-
-    // calculate sum of numbers at the beginning of the linked list
-    current = head;
-    while (current != NULL) {
-        sum += current->data;
-        current = current->next;
-    }
-
-    // print sum
-    printf("Sum of numbers at the beginning of the linked list: %d\n", sum);
-
+    printf("The linked list is: ");
+    printList(head);
     return 0;
 }

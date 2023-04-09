@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_CUSTOMERS 100
+#define MAX_c 100
 
 // Structure definition for payment date
 struct date {
@@ -26,57 +26,57 @@ struct customer {
 };
 
 int main() {
-    struct customer customers[MAX_CUSTOMERS];
-    int num_customers;
+    struct customer c[MAX_c];
+    int num_c;
     int i;
 
-    printf("Enter the number of customers: ");
-    scanf("%d", &num_customers);
+    printf("Enter the number of c: ");
+    scanf("%d", &num_c);
 
     // Input customer records
-    for (i = 0; i < num_customers; i++) {
+    for (i = 0; i < num_c; i++) {
         printf("\nCustomer #%d:\n", i + 1);
         printf("Name: ");
-        scanf(" %[^\n]", customers[i].name);
+        scanf(" %[^\n]", c[i].name);
         printf("Street: ");
-        scanf(" %[^\n]", customers[i].street);
+        scanf(" %[^\n]", c[i].street);
         printf("City: ");
-        scanf(" %[^\n]", customers[i].city);
+        scanf(" %[^\n]", c[i].city);
         printf("Contact: ");
-        scanf(" %[^\n]", customers[i].contact);
+        scanf(" %[^\n]", c[i].contact);
         printf("Account number: ");
-        scanf("%d", &customers[i].account_number);
+        scanf("%d", &c[i].account_number);
         printf("Account type: ");
-        scanf(" %[^\n]", customers[i].account_type);
+        scanf(" %[^\n]", c[i].account_type);
         printf("Old balance: ");
-        scanf("%f", &customers[i].old_balance);
+        scanf("%f", &c[i].old_balance);
         printf("Current payment: ");
-        scanf("%f", &customers[i].current_payment);
+        scanf("%f", &c[i].current_payment);
         printf("Payment date (mm/dd/yyyy): ");
-        scanf("%d/%d/%d", &customers[i].payment_date.month, &customers[i].payment_date.day, &customers[i].payment_date.year);
+        scanf("%d/%d/%d", &c[i].payment_date.month, &c[i].payment_date.day, &c[i].payment_date.year);
 
         // Update new balance
-        customers[i].new_balance = customers[i].old_balance - customers[i].current_payment;
+        c[i].new_balance = c[i].old_balance - c[i].current_payment;
     }
 
     // Display customer records with account status
     printf("\nCustomer Records:\n");
-    for (i = 0; i < num_customers; i++) {
+    for (i = 0; i < num_c; i++) {
         printf("\nCustomer #%d:\n", i + 1);
-        printf("Name: %s\n", customers[i].name);
-        printf("Street: %s\n", customers[i].street);
-        printf("City: %s\n", customers[i].city);
-        printf("Contact: %s\n", customers[i].contact);
-        printf("Account number: %d\n", customers[i].account_number);
-        printf("Account type: %s\n", customers[i].account_type);
-        printf("Old balance: %.2f\n", customers[i].old_balance);
-        printf("Current payment: %.2f\n", customers[i].current_payment);
-        printf("New balance: %.2f\n", customers[i].new_balance);
+        printf("Name: %s\n", c[i].name);
+        printf("Street: %s\n", c[i].street);
+        printf("City: %s\n", c[i].city);
+        printf("Contact: %s\n", c[i].contact);
+        printf("Account number: %d\n", c[i].account_number);
+        printf("Account type: %s\n", c[i].account_type);
+        printf("Old balance: %.2f\n", c[i].old_balance);
+        printf("Current payment: %.2f\n", c[i].current_payment);
+        printf("New balance: %.2f\n", c[i].new_balance);
 
         // Determine account status
-        if (customers[i].current_payment > 0 && customers[i].current_payment < 0.1 * customers[i].old_balance) {
+        if (c[i].current_payment > 0 && c[i].current_payment < 0.1 * c[i].old_balance) {
             printf("Account status: OVERDUE\n");
-        } else if (customers[i].new_balance > 0 && customers[i].current_payment == 0) {
+        } else if (c[i].new_balance > 0 && c[i].current_payment == 0) {
             printf("Account status: DELINQUENT\n");
         } else {
             printf("Account status: CURRENT ACCOUNT\n");

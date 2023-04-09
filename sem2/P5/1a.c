@@ -1,76 +1,79 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Define the singly linked list node structure
+// Define the Node structure
 struct Node {
     int data;
-    struct Node* next;
+    struct Node *next;
 };
 
-// Function to insert a node at the end of the list
-void insertNode(struct Node** head, int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = data;
-    newNode->next = NULL;
-    if (*head == NULL) {
-        *head = newNode;
+// Function to insert a Node after a particular location
+void insertAfterLocation(struct Node *head, int loc, int num) {
+    struct Node *temp = head;
+    int i;
+    // Traverse to the desired location
+    for(i = 1; i < loc && temp != NULL; i++) {
+        temp = temp->next;
     }
-    else {
-        struct Node* current = *head;
-        while (current->next != NULL) {
-            current = current->next;
-        }
-        current->next = newNode;
+    // Check if the location is valid
+    if(temp == NULL) {
+        printf("Invalid location\n");
+        return;
     }
+    // Create a new Node
+    struct Node *newNode = (struct Node*) malloc(sizeof(struct Node));
+    newNode->data = num;
+    newNode->next = temp->next;
+    temp->next = newNode;
 }
 
-// Function to calculate the sum of nodes after a particular location
-int sumAfterNode(struct Node* head, int loc) {
-    int sum = 0;
-    struct Node* current = head;
-    while (current != NULL && current->data != loc) {
-        current = current->next;
+// Function to display the linked list
+void displayList(struct Node *head) {
+    struct Node *temp = head;
+    printf("List: ");
+    while(temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
     }
-    if (current == NULL) {
-        printf("Location not found in the list\n");
-        return 0;
-    }
-    else {
-        current = current->next;
-        while (current != NULL) {
-            sum += current->data;
-            current = current->next;
-        }
-    }
-    return sum;
-}
-
-// Function to print the linked list
-void printList(struct Node* head) {
-    struct Node* current = head;
-    while (current != NULL) {
-        printf("%d -> ", current->data);
-        current = current->next;
-    }
-    printf("NULL\n");
+    printf("\n");
 }
 
 // Main function
 int main() {
-    struct Node* head = NULL;
-    int loc, n, data;
-    printf("Enter the number of nodes in the linked list: ");
+    int n, i, num, loc;
+    // Create the head Node
+    struct Node *head = NULL;
+    head = (struct Node*) malloc(sizeof(struct Node));
+    printf("Enter the number of elements: ");
     scanf("%d", &n);
-    for (int i = 0; i < n; i++) {
-        printf("Enter the data for node %d: ", i + 1);
-        scanf("%d", &data);
-        insertNode(&head, data);
+    printf("Enter element 1: ");
+    scanf("%d", &head->data);
+    head->next = NULL;
+    // Insert the remaining Nodes
+    for(i = 2; i <= n; i++) {
+        struct Node *temp = head;
+        while(temp->next != NULL) {
+            temp = temp->next;
+        }
+        struct Node *newNode = (struct Node*) malloc(sizeof(struct Node));
+        printf("Enter element %d: ", i);
+        scanf("%d", &num);
+        newNode->data = num;
+        newNode->next = NULL;
+        temp->next = newNode;
     }
-    printf("The linked list is: ");
-    printList(head);
-    printf("Enter the location after which you want to calculate the sum: ");
+    // Display the original list
+    printf("Original ");
+    displayList(head);
+    // Take input for location and number to be inserted
+    printf("Enter the location to insert after: ");
     scanf("%d", &loc);
-    int sum = sumAfterNode(head, loc);
-    printf("The sum of nodes after location %d is: %d\n", loc, sum);
+    printf("Enter the number to insert: ");
+    scanf("%d", &num);
+    // Call the insert function
+    insertAfterLocation(head, loc, num);
+    // Display the updated list
+    printf("Updated ");
+    displayList(head);
     return 0;
 }
