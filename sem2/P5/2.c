@@ -18,10 +18,10 @@ void push(struct Node** head_ref, int new_data) {
 // Function to print the linked list
 void printList(struct Node* node) {
     while (node != NULL) {
-        printf("%d ", node->data);
+        printf("%d -> ", node->data);
         node = node->next;
     }
-    printf("\n");
+    printf("NULL\n");
 }
 
 // Function to recursively reverse the linked list
