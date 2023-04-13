@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 int string_to_int(char *str, int len) {
     // base case: if the string is empty, return 0
