@@ -8,24 +8,24 @@ typedef struct Node {
 } Node;
 
 Node* createNode(int data) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->data = data;
-    newNode->prev = NULL;
-    newNode->next = NULL;
-    return newNode;
+    Node* new_node = (Node*)malloc(sizeof(Node));
+    new_node->data = data;
+    new_node->prev = NULL;
+    new_node->next = NULL;
+    return new_node;
 }
 
 void insertAfter(Node* prevNode, int data) {
     if (prevNode == NULL) {
         return;
     }
-    Node* newNode = createNode(data);
-    newNode->prev = prevNode;
-    newNode->next = prevNode->next;
+    Node* new_node = createNode(data);
+    new_node->prev = prevNode;
+    new_node->next = prevNode->next;
     if (prevNode->next != NULL) {
-        prevNode->next->prev = newNode;
+        prevNode->next->prev = new_node;
     }
-    prevNode->next = newNode;
+    prevNode->next = new_node;
 }
 
 void printList(Node* head) {
