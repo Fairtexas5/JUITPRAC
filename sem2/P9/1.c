@@ -1,52 +1,71 @@
 #include <stdio.h>
 
-#define MAX_SIZE 100
+#define MAX_SIZE 30
 
-typedef struct {
-  int arr[MAX_SIZE];
-  int top;
-} Stack;
+struct Stack {
+    int arr[MAX_SIZE];
+    int top;
+};
 
-void initStack(Stack *s) {
-  s->top = -1;
+void push(struct Stack *s, int item) {
+    if (s->top >= MAX_SIZE) {
+        printf("Stack overflow\n");
+        return;
+    }
+    s->arr[++s->top] = item;
 }
 
-int isStackEmpty(Stack *s) {
-  return (s->top == -1);
+int pop(struct Stack *s) {
+    if (s->top < 0) {
+        printf("Stack underflow\n");
+        return -1;
+    }
+    return s->arr[s->top--];
 }
 
-int isStackFull(Stack *s) {
-  return (s->top == MAX_SIZE - 1);
-}
-
-void push(Stack *s, int data) {
-  if (isStackFull(s)) {
-    printf("Error: stack is full\n");
-    return;
-  }
-  s->arr[++s->top] = data;
-}
-
-int pop(Stack *s) {
-  if (isStackEmpty(s)) {
-    printf("Error: stack is empty\n");
-    return -1;
-  }
-  return s->arr[s->top--];
+int peek(struct Stack *s) {
+    if (s->top < 0) {
+        printf("Stack is empty\n");
+        return -1;
+    }
+    return s->arr[s->top];
 }
 
 int main() {
-  Stack s;
-  initStack(&s);
+    struct Stack s;
+    s.top = -1;
 
-  push(&s, 10);
-  push(&s, 20);
-  push(&s, 30);
+    int choice, item;
+    do {
+        printf("\n1. Push\n2. Pop\n3. Peek\n4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-  printf("%d\n", pop(&s)); // output: 30
-  printf("%d\n", pop(&s)); // output: 20
-  printf("%d\n", pop(&s)); // output: 10
-  printf("%d\n", pop(&s)); // output: Error: stack is empty
+        switch (choice) {
+            case 1:
+                printf("Enter the item to be pushed: ");
+                scanf("%d", &item);
+                push(&s, item);
+                break;
+            case 2:
+                item = pop(&s);
+                if (item != -1) {
+                    printf("Popped item: %d\n", item);
+                }
+                break;
+            case 3:
+                item = peek(&s);
+                if (item != -1) {
+                    printf("Top item: %d\n", item);
+                }
+                break;
+            case 4:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice\n");
+        }
+    } while (choice != 4);
 
-  return 0;
+    return 0;
 }
