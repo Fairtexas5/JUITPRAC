@@ -1,26 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node {
+typedef struct Node {
     int data;
     struct Node* next;
     struct Node* prev;
-};
+}Node;
 
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
     newNode->data = data;
     newNode->prev = NULL;
     newNode->next = NULL;
     return newNode;
 }
 
-struct Node* insertAtEnd(struct Node* head, int data) {
-    struct Node* newNode = createNode(data);
+Node* insertAtEnd(Node* head, int data) {
+    Node* newNode = createNode(data);
     if (head == NULL) {
         head = newNode;
     } else {
-        struct Node* temp = head;
+        Node* temp = head;
         while (temp->next != NULL) {
             temp = temp->next;
         }
@@ -30,8 +30,8 @@ struct Node* insertAtEnd(struct Node* head, int data) {
     return head;
 }
 
-void splitList(struct Node* head, struct Node** evenList, struct Node** oddList) {
-    struct Node* temp = head;
+void splitList(Node* head, Node** evenList, Node** oddList) {
+    Node* temp = head;
     while (temp != NULL) {
         if (temp->data % 2 == 0) {
             *evenList = insertAtEnd(*evenList, temp->data);
@@ -42,8 +42,8 @@ void splitList(struct Node* head, struct Node** evenList, struct Node** oddList)
     }
 }
 
-void displayList(struct Node* head) {
-    struct Node* temp = head;
+void printList(Node* head) {
+    Node* temp = head;
     while (temp != NULL) {
         printf("%d ", temp->data);
         temp = temp->next;
@@ -52,7 +52,7 @@ void displayList(struct Node* head) {
 }
 
 int main() {
-    struct Node* head = NULL;
+    Node* head = NULL;
     int n, data;
     printf("Enter the number of elements in the list: ");
     scanf("%d", &n);
@@ -61,14 +61,14 @@ int main() {
         scanf("%d", &data);
         head = insertAtEnd(head, data);
     }
-    struct Node* evenList = NULL;
-    struct Node* oddList = NULL;
+    Node* evenList = NULL;
+    Node* oddList = NULL;
     splitList(head, &evenList, &oddList);
     printf("Original list: ");
-    displayList(head);
+    printList(head);
     printf("Even list: ");
-    displayList(evenList);
+    printList(evenList);
     printf("Odd list: ");
-    displayList(oddList);
+    printList(oddList);
     return 0;
 }

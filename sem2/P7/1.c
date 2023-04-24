@@ -138,7 +138,7 @@ int main() {
     
     printf("\n");
     displayFromHead(head);
-    struct Node* tail = head;
+    Node* tail = head;
     while (tail->next != NULL) {
         tail = tail->next;
     }
