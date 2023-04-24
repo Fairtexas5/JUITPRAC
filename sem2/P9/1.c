@@ -1,82 +1,52 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 #define MAX_SIZE 100
 
-int stack[MAX_SIZE], top = -1;
+typedef struct {
+  int arr[MAX_SIZE];
+  int top;
+} Stack;
 
-void push(int element) {
-    if (top >= MAX_SIZE - 1) {
-        printf("Stack Overflow!\n");
-    } else {
-        top++;
-        stack[top] = element;
-        printf("%d pushed to stack.\n", element);
-    }
+void initStack(Stack *s) {
+  s->top = -1;
 }
 
-void pop() {
-    if (top == -1) {
-        printf("Stack Underflow!\n");
-    } else {
-        printf("%d popped from stack.\n", stack[top]);
-        top--;
-    }
+int isStackEmpty(Stack *s) {
+  return (s->top == -1);
 }
 
-void peek() {
-    if (top == -1) {
-        printf("Stack is empty.\n");
-    } else {
-        printf("Top element of stack: %d\n", stack[top]);
-    }
+int isStackFull(Stack *s) {
+  return (s->top == MAX_SIZE - 1);
 }
 
-void display() {
-    if (top == -1) {
-        printf("Stack is empty.\n");
-    } else {
-        int i;
-        printf("Stack elements: ");
-        for (i = top; i >= 0; i--) {
-            printf("%d ", stack[i]);
-        }
-        printf("\n");
-    }
+void push(Stack *s, int data) {
+  if (isStackFull(s)) {
+    printf("Error: stack is full\n");
+    return;
+  }
+  s->arr[++s->top] = data;
+}
+
+int pop(Stack *s) {
+  if (isStackEmpty(s)) {
+    printf("Error: stack is empty\n");
+    return -1;
+  }
+  return s->arr[s->top--];
 }
 
 int main() {
-    int choice, element;
-    while (1) {
-        printf("Choose an operation:\n");
-        printf("1. Push\n");
-        printf("2. Pop\n");
-        printf("3. Peek\n");
-        printf("4. Display\n");
-        printf("5. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-        switch (choice) {
-            case 1:
-                printf("Enter the element to push: ");
-                scanf("%d", &element);
-                push(element);
-                break;
-            case 2:
-                pop();
-                break;
-            case 3:
-                peek();
-                break;
-            case 4:
-                display();
-                break;
-            case 5:
-                exit(0);
-            default:
-                printf("Invalid choice! Try again.\n");
-                break;
-        }
-    }
-    return 0;
+  Stack s;
+  initStack(&s);
+
+  push(&s, 10);
+  push(&s, 20);
+  push(&s, 30);
+
+  printf("%d\n", pop(&s)); // output: 30
+  printf("%d\n", pop(&s)); // output: 20
+  printf("%d\n", pop(&s)); // output: 10
+  printf("%d\n", pop(&s)); // output: Error: stack is empty
+
+  return 0;
 }
