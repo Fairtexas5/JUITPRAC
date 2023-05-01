@@ -1,83 +1,119 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node {
+typedef struct Node {
     int data;
     struct Node* next;
-};
+} Node;
 
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
     newNode->data = data;
     newNode->next = NULL;
     return newNode;
 }
 
-struct Node* insertAtEnd(struct Node* head, int data) {
-    struct Node* newNode = createNode(data);
-    if (head == NULL) {
-        head = newNode;
-        head->next = head;
-    } else {
-        struct Node* temp = head;
-        while (temp->next != head) {
+void insertNode(Node** head, int data) {
+    Node* newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+        newNode->next = *head;
+    }
+    else {
+        Node* temp = *head;
+        while (temp->next != *head) {
             temp = temp->next;
         }
         temp->next = newNode;
-        newNode->next = head;
+        newNode->next = *head;
     }
-    return head;
 }
 
-void printList(struct Node* head) {
-    struct Node* temp = head;
-    if (head != NULL) {
+void displayList(Node* head) {
+    if (head == NULL) {
+        printf("List is empty.");
+    }
+    else {
+        Node* temp = head;
         do {
             printf("%d ", temp->data);
             temp = temp->next;
         } while (temp != head);
     }
-    printf("\n");
 }
 
-struct Node* addAfter(struct Node* head, int loc, int data) {
-    struct Node* newNode = createNode(data);
-    struct Node* temp = head;
-    int i;
-    for (i = 1; i < loc && temp->next != head; i++) {
-        temp = temp->next;
+void deleteNode(Node** head, int data) {
+    Node* current = *head;
+    Node* prev = NULL;
+    if (*head == NULL) {
+        printf("List is empty.");
+        return;
     }
-    if (temp == head) {
-        newNode->next = head->next;
-        head->next = newNode;
-    } else if (temp->next == head) {
-        temp->next = newNode;
-        newNode->next = head;
-    } else {
-        newNode->next = temp->next;
-        temp->next = newNode;
+    else {
+        while (current->data != data) {
+            if (current->next == *head) {
+                printf("%d not found in the list.", data);
+                return;
+            }
+            prev = current;
+            current = current->next;
+        }
+        if (current->next == *head && prev == NULL) {
+            *head = NULL;
+            free(current);
+            return;
+        }
+        if (current == *head) {
+            prev = *head;
+            while (prev->next != *head) {
+                prev = prev->next;
+            }
+            *head = current->next;
+            prev->next = *head;
+            free(current);
+        }
+        else if (current->next == *head) {
+            prev->next = *head;
+            free(current);
+        }
+        else {
+            prev->next = current->next;
+            free(current);
+        }
     }
-    return head;
 }
 
 int main() {
-    struct Node* head = NULL;
-    int n, data, i, loc;
-    printf("Enter the number of nodes: ");
-    scanf("%d", &n);
-    for (i = 0; i < n; i++) {
-        printf("Enter data for node %d: ", i + 1);
-        scanf("%d", &data);
-        head = insertAtEnd(head, data);
-    }
-    printf("Original List: ");
-    printList(head);
-    printf("Enter the location after which you want to add a number: ");
-    scanf("%d", &loc);
-    printf("Enter the number you want to add: ");
-    scanf("%d", &data);
-    head = addAfter(head, loc, data);
-    printf("List after adding %d after location %d: ", data, loc);
-    printList(head);
+    Node* head = NULL;
+    int choice, data;
+    do {
+        printf("\n1. Insert Node");
+        printf("\n2. Delete Node");
+        printf("\n3. Display List");
+        printf("\n4. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+        case 1:
+            printf("\nEnter data to insert: ");
+            scanf("%d", &data);
+            insertNode(&head, data);
+            break;
+        case 2:
+            printf("\nEnter data to delete: ");
+            scanf("%d", &data);
+            deleteNode(&head, data);
+            break;
+        case 3:
+            printf("\nThe List is: ");
+            displayList(head);
+            break;
+        case 4:
+            printf("\nExiting...");
+            break;
+        default:
+            printf("\nInvalid choice.");
+        }
+    } while (choice != 4);
     return 0;
 }
