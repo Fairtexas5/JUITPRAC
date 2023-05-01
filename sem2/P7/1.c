@@ -91,6 +91,19 @@ void displayFromTail(struct Node* tail) {
     }
 }
 
+// Function to add a new node at the beginning of the linked list
+void addAtBeginning(Node** headRef, int data) {
+    Node* newNode = createNode(data);
+
+    if (*headRef == NULL) {
+        *headRef = newNode;
+    } else {
+        (*headRef)->prev = newNode;
+        newNode->next = *headRef;
+        *headRef = newNode;
+    }
+}
+
 
 int main() {
     Node* head = NULL;
@@ -143,5 +156,19 @@ int main() {
         tail = tail->next;
     }
     displayFromTail(tail);
+    
+    // Add additional numbers at the beginning of the list
+    int m;
+    printf("Enter the number of nodes to add at the beginning: ");
+    scanf("%d", &m);
+    printf("Enter the data for each node:\n");
+    for (int i = 0; i < m; i++) {
+        int data;
+        scanf("%d", &data);
+        addAtBeginning(&head, data);
+    }
+
+    // Print the modified list
+    printList(head);
     return 0;
 }

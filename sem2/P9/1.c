@@ -1,82 +1,71 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-#define MAX_SIZE 100
+#define MAX_SIZE 30
 
-int stack[MAX_SIZE], top = -1;
+struct Stack {
+    int arr[MAX_SIZE];
+    int top;
+};
 
-void push(int element) {
-    if (top >= MAX_SIZE - 1) {
-        printf("Stack Overflow!\n");
-    } else {
-        top++;
-        stack[top] = element;
-        printf("%d pushed to stack.\n", element);
+void push(struct Stack *s, int item) {
+    if (s->top >= MAX_SIZE) {
+        printf("Stack overflow\n");
+        return;
     }
+    s->arr[++s->top] = item;
 }
 
-void pop() {
-    if (top == -1) {
-        printf("Stack Underflow!\n");
-    } else {
-        printf("%d popped from stack.\n", stack[top]);
-        top--;
+int pop(struct Stack *s) {
+    if (s->top < 0) {
+        printf("Stack underflow\n");
+        return -1;
     }
+    return s->arr[s->top--];
 }
 
-void peek() {
-    if (top == -1) {
-        printf("Stack is empty.\n");
-    } else {
-        printf("Top element of stack: %d\n", stack[top]);
+int peek(struct Stack *s) {
+    if (s->top < 0) {
+        printf("Stack is empty\n");
+        return -1;
     }
-}
-
-void display() {
-    if (top == -1) {
-        printf("Stack is empty.\n");
-    } else {
-        int i;
-        printf("Stack elements: ");
-        for (i = top; i >= 0; i--) {
-            printf("%d ", stack[i]);
-        }
-        printf("\n");
-    }
+    return s->arr[s->top];
 }
 
 int main() {
-    int choice, element;
-    while (1) {
-        printf("Choose an operation:\n");
-        printf("1. Push\n");
-        printf("2. Pop\n");
-        printf("3. Peek\n");
-        printf("4. Display\n");
-        printf("5. Exit\n");
+    struct Stack s;
+    s.top = -1;
+
+    int choice, item;
+    do {
+        printf("\n1. Push\n2. Pop\n3. Peek\n4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
+
         switch (choice) {
             case 1:
-                printf("Enter the element to push: ");
-                scanf("%d", &element);
-                push(element);
+                printf("Enter the item to be pushed: ");
+                scanf("%d", &item);
+                push(&s, item);
                 break;
             case 2:
-                pop();
+                item = pop(&s);
+                if (item != -1) {
+                    printf("Popped item: %d\n", item);
+                }
                 break;
             case 3:
-                peek();
+                item = peek(&s);
+                if (item != -1) {
+                    printf("Top item: %d\n", item);
+                }
                 break;
             case 4:
-                display();
+                printf("Exiting...\n");
                 break;
-            case 5:
-                exit(0);
             default:
-                printf("Invalid choice! Try again.\n");
-                break;
+                printf("Invalid choice\n");
         }
-    }
+    } while (choice != 4);
+
     return 0;
 }
