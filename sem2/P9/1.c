@@ -2,12 +2,12 @@
 
 #define MAX_SIZE 30
 
-struct Stack {
+typedef struct Stack {
     int arr[MAX_SIZE];
     int top;
-};
+}Stack;
 
-void push(struct Stack *s, int item) {
+void push(Stack *s, int item) {
     if (s->top >= MAX_SIZE) {
         printf("Stack overflow\n");
         return;
@@ -15,7 +15,7 @@ void push(struct Stack *s, int item) {
     s->arr[++s->top] = item;
 }
 
-int pop(struct Stack *s) {
+int pop(Stack *s) {
     if (s->top < 0) {
         printf("Stack underflow\n");
         return -1;
@@ -23,16 +23,16 @@ int pop(struct Stack *s) {
     return s->arr[s->top--];
 }
 
-int peek(struct Stack *s) {
+int peek(Stack *s) {
     if (s->top < 0) {
-        printf("Stack is empty\n");
+        printf("Empty\n");
         return -1;
     }
     return s->arr[s->top];
 }
 
 int main() {
-    struct Stack s;
+    Stack s;
     s.top = -1;
 
     int choice, item;
