@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <math.h>
+
+#define MAXLINE 500
 typedef struct node
 {
-    char data[16];
+    char data[MAXLINE];
     struct node *link;
 } NODE;
 typedef struct queue
@@ -13,16 +16,15 @@ typedef struct queue
     NODE *rear;
     int count;
 } QUEUE;
-QUEUE* CreateQueue()
-{
+
+QUEUE* CreateQueue(){
     QUEUE* q = (QUEUE*)malloc(sizeof(QUEUE));  
     q->front = NULL;                           
     q->rear = NULL;                            
     q->count = 0;                              
     return q;
 }
-void Enqueue(QUEUE *q, char* dataIn)
-{
+void Enqueue(QUEUE *q, char* dataIn){
     NODE *newNode = (NODE*)malloc(sizeof(NODE));   
     strcpy(newNode->data, dataIn);                 
     newNode->link = NULL;
@@ -34,8 +36,8 @@ void Enqueue(QUEUE *q, char* dataIn)
     //printf(" New node is %s", dataIn);
     q->count++;                            
 }
-void Dequeue(QUEUE *q, char *dataOut)
-{
+
+void Dequeue(QUEUE *q, char *dataOut){
     NODE *temp = q->front;
     strcpy(dataOut, q->front->data);    
     if (q->count == 1)                  
@@ -44,12 +46,11 @@ void Dequeue(QUEUE *q, char *dataOut)
     q->count--;                         
     free(temp);
 }
-int QueueCount(QUEUE *q)
-{
+int QueueCount(QUEUE *q){
     return q->count;         
 }
-void Display(QUEUE *q)
-{
+
+void Display(QUEUE *q){
     NODE *loc = q->front; // first node
     printf("\n");
     printf("expression: ");
@@ -59,8 +60,8 @@ void Display(QUEUE *q)
         loc = loc->link;
     }    
 }
-void DeleteQueue(QUEUE *q)
-{
+
+void DeleteQueue(QUEUE *q){
     NODE *temp;
     while (q->front != NULL)
     {
@@ -70,8 +71,8 @@ void DeleteQueue(QUEUE *q)
     }
     free(q);
 }
-int calculate(char a, int b, int c)
-{
+
+int calculate(char a, int b, int c){
      
     if(a=='+')
         return (b+c);
@@ -82,77 +83,70 @@ int calculate(char a, int b, int c)
         return (b*c);
     else if(a=='/')
         return (b/c);
+    else if (a=='^')
+        return (pow(b,c));
+    else if (a=='%')
+        return (b%c);
     else
         return -1;
 }
-void stringcopy(char data1[],char* dataptr)
-{
-    int i=0;
-    while(*dataptr!='\0')
-    {
-        data1[i]=*dataptr;
-        dataptr++;
-        i++;
-    }
-    data1[i]='\0';
-}
-int calculateExpression(QUEUE *q)
-{
-    char data[16], data1[16],data2[16],temp_opr, temp_op1, temp_op2, *dataptr;
+
+int calculateExpression(QUEUE *q){
+
+    char data[MAXLINE], dt1[MAXLINE],dt2[MAXLINE],t_opr, t_op1, t_op2, *dptr;
     int i, operand1, operand2, value;
-    while ((QueueCount(q)!=1))    { 
+
+    while ((QueueCount(q)!=1)){
         Dequeue(q, data);
-        temp_opr=data[0];
-   if(ispunct(temp_opr))// if temp_opr is punctuation '+' or '_' or '*' or '/'
-   {
-    dataptr=q->front->data;//data pointer is pointing to the 2nd data in the queue
-    temp_op1=*dataptr;
-    stringcopy(data1,dataptr); // copies the string pointed by dataptr to data1
+        t_opr=data[0];
+        if(ispunct(t_opr)){// if t_opr is punctuation '+' or '_' or '*' or '/'
+                dptr=q->front->data;//data pointer is pointing to the 2nd data in the queue
+                t_op1=*dptr;
+                strcpy(dt1,dptr); // copies the string pointed by dptr to dt1
              
-    dataptr=q->front->link->data;
-    temp_op2=*dataptr;      //data pointer is poiting to the 3rd data in the queue
-    stringcopy(data2,dataptr); // copies the string pointed by dataptr to data2
-     if(!ispunct(temp_op1)&&!ispunct(temp_op2))
-            {
-                 
-                operand1= atoi (data1);      
-                operand2= atoi (data2);       
-                Dequeue(q, data1);   
-                Dequeue(q, data2);   
-                value=calculate(temp_opr,operand1, operand2);
-                printf (" \n\nafter calculating %d %c %d = %d\n",operand1,temp_opr,operand2,value);
-                // itoa (value, data, 10);      
-                sprintf(data,"%d",value);
-                dataptr=data;
-                   Enqueue(q, dataptr);  
-                Display(q);
+                dptr=q->front->link->data;
+                t_op2=*dptr;      //data pointer is poiting to the 3rd data in the queue
+                strcpy(dt2,dptr); // copies the string pointed by dptr to dt2
+                if(!ispunct(t_op1)&&!ispunct(t_op2)){
+                        operand1= atoi (dt1);      
+                        operand2= atoi (dt2);       
+                        Dequeue(q, dt1);   
+                        Dequeue(q, dt2);   
+                        value=calculate(t_opr,operand1, operand2);
+                        printf (" \n\n Caculation : %d %c %d = %d\n",operand1,t_opr,operand2,value);
+                        // itoa (value, data, 10);      
+                        sprintf(data,"%d",value);
+                        dptr=data;
+                        Enqueue(q, dptr);  
+                        Display(q);
+                    }
+                    else{
+                        dptr=data;                   
+                        Enqueue(q, dptr);   
+                        Display(q);
+                    }
             }
-            else
-            {
-                dataptr=data;                   
-                Enqueue(q, dataptr);   
+            else{
+                dptr=data;
+                Enqueue(q, dptr); 
                 Display(q);
-            }
-        }
-        else
-        {
-            dataptr=data;
-            Enqueue(q, dataptr); 
-            Display(q);
-        }     
+            }     
     }
-    Dequeue(q, data);  
+    Dequeue(q, data);
     return atoi(data); 
 }
-int main()
-{
-    char expr[128] = "- + * 2 3 * 5 4 9";
+
+int main(){
+    char expr[MAXLINE];
+    //Use spaces to differentiate between operators and numbers
+    printf("Enter expression: ");
+    fgets(expr, MAXLINE, stdin);
+    //"- + * 2 3 * 5 4 10" = "16";
     char *token;
     int finalvalue;
     QUEUE *q = CreateQueue();   
     token = expr;
-    while ((token = strtok(token, " ")))
-    {
+    while ((token = strtok(token, " "))){
         Enqueue(q, token);
         token = NULL;
     }

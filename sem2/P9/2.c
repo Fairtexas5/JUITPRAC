@@ -1,43 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node {
+typedef struct node {
     int data;
-    struct Node* next;
-};
+    struct node* next;
+}NODE;
 
-struct Stack {
-    struct Node* top;
-};
+typedef struct stack {
+    struct node* top;
+}Stack;
 
-void createStack(struct Stack* s) {
+void createStack(Stack* s) {
     s->top = NULL;
 }
 
-int isEmpty(struct Stack* s) {
+int isEmpty(Stack* s) {
     return (s->top == NULL);
 }
 
-void push(struct Stack* s, int element) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = element;
-    newNode->next = s->top;
-    s->top = newNode;
+void push(Stack* s, int element) {
+    NODE* new_node = (NODE*)malloc(sizeof(NODE));
+    new_node->data = element;
+    new_node->next = s->top;
+    s->top = new_node;
     printf("%d pushed to stack.\n", element);
 }
 
-void pop(struct Stack* s) {
+void pop(Stack* s) {
     if (isEmpty(s)) {
         printf("Stack Underflow!\n");
     } else {
-        struct Node* temp = s->top;
+        NODE* temp = s->top;
         printf("%d popped from stack.\n", temp->data);
         s->top = s->top->next;
         free(temp);
     }
 }
 
-void peek(struct Stack* s) {
+void peek(Stack* s) {
     if (isEmpty(s)) {
         printf("Stack is empty.\n");
     } else {
@@ -45,22 +45,22 @@ void peek(struct Stack* s) {
     }
 }
 
-int isFull(struct Stack* s) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode == NULL) {
-        free(newNode);
+int isFull(Stack* s) {
+    NODE* new_node = (NODE*)malloc(sizeof(NODE));
+    if (new_node == NULL) {
+        free(new_node);
         return 1;
     } else {
-        free(newNode);
+        free(new_node);
         return 0;
     }
 }
 
-void display(struct Stack* s) {
+void display(Stack* s) {
     if (isEmpty(s)) {
         printf("Stack is empty.\n");
     } else {
-        struct Node* temp = s->top;
+        NODE* temp = s->top;
         printf("Stack elements: ");
         while (temp != NULL) {
             printf("%d ", temp->data);
@@ -71,7 +71,7 @@ void display(struct Stack* s) {
 }
 
 int main() {
-    struct Stack s;
+    Stack s;
     createStack(&s);
     int choice, element;
     while (1) {

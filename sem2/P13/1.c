@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node {
+typedef struct node {
     int data;
-    struct Node* left;
-    struct Node* right;
-};
+    struct node* left;
+    struct node* right;
+}NODE;
 
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = data;
-    newNode->left = NULL;
-    newNode->right = NULL;
-    return newNode;
+NODE* createNode(int data) {
+    NODE* new_node = (NODE*)malloc(sizeof(NODE));
+    new_node->data = data;
+    new_node->left = NULL;
+    new_node->right = NULL;
+    return new_node;
 }
 
-struct Node* insert(struct Node* root, int data) {
+NODE* insert(NODE* root, int data) {
     if (root == NULL)
         return createNode(data);
     
@@ -27,7 +27,7 @@ struct Node* insert(struct Node* root, int data) {
     return root;
 }
 
-void preorderTraversal(struct Node* root) {
+void preorderTraversal(NODE* root) {
     if (root != NULL) {
         printf("%d ", root->data);
         preorderTraversal(root->left);
@@ -35,7 +35,7 @@ void preorderTraversal(struct Node* root) {
     }
 }
 
-void inorderTraversal(struct Node* root) {
+void inorderTraversal(NODE* root) {
     if (root != NULL) {
         inorderTraversal(root->left);
         printf("%d ", root->data);
@@ -43,7 +43,7 @@ void inorderTraversal(struct Node* root) {
     }
 }
 
-void postorderTraversal(struct Node* root) {
+void postorderTraversal(NODE* root) {
     if (root != NULL) {
         postorderTraversal(root->left);
         postorderTraversal(root->right);
@@ -51,14 +51,14 @@ void postorderTraversal(struct Node* root) {
     }
 }
 
-struct Node* findMin(struct Node* root) {
+NODE* findMin(NODE* root) {
     while (root->left != NULL)
         root = root->left;
     
     return root;
 }
 
-struct Node* delete(struct Node* root, int data) {
+NODE* delete(NODE* root, int data) {
     if (root == NULL)
         return root;
     
@@ -68,16 +68,17 @@ struct Node* delete(struct Node* root, int data) {
         root->right = delete(root->right, data);
     else {
         if (root->left == NULL) {
-            struct Node* temp = root->right;
+            NODE* temp = root->right;
             free(root);
             return temp;
-        } else if (root->right == NULL) {
-            struct Node* temp = root->left;
+        }
+        else if (root->right == NULL) {
+            NODE* temp = root->left;
             free(root);
             return temp;
         }
         
-        struct Node* minRight = findMin(root->right);
+        NODE* minRight = findMin(root->right);
         root->data = minRight->data;
         root->right = delete(root->right, minRight->data);
     }
@@ -85,7 +86,7 @@ struct Node* delete(struct Node* root, int data) {
     return root;
 }
 
-struct Node* search(struct Node* root, int data) {
+NODE* search(NODE* root, int data) {
     if (root == NULL || root->data == data)
         return root;
     
@@ -108,7 +109,7 @@ void printMenu() {
 }
 
 int main() {
-    struct Node* root = NULL;
+    NODE* root = NULL;
     int choice, data;
     
     do {
@@ -139,7 +140,7 @@ int main() {
                 printf("Postorder Traversal: ");
                 postorderTraversal(root);
                 printf("\n");
-                break;
+                break; 
             case 5:
                 printf("Enter data to delete: ");
                 scanf("%d", &data);
@@ -149,14 +150,14 @@ int main() {
             case 6:
                 printf("Enter data to search: ");
                 scanf("%d", &data);
-                struct Node* result = search(root, data);
+                NODE* result = search(root, data);
                 if (result != NULL)
-                    printf("Data found in the binary tree.\n");
+                    printf("Data found\n");
                 else
-                    printf("Data not found in the binary tree.\n");
+                    printf("Data not found\n");
                 break;
             default:
-                printf("Invalid choice. Please try again.\n");
+                printf("Invalid choice.\n");
         }
     } while (choice != 0);
     
