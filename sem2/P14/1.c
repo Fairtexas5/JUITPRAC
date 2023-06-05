@@ -1,53 +1,36 @@
+/*
+An array contains the elements shown below. Sort the elements by insertion sort in ascending order, what would be the value of the elements in the array after each passes of the straight insertion sort algorithm.
+	3  13  7  26  44   23   98  57
+*/
 #include <stdio.h>
+#include <stdlib.h>
 
-void insertionSort(int arr[], int n) {
-    int i, j, key;
-    for (i = 1; i < n; i++) {
-        key = arr[i];
-        j = i - 1;
-
-        // Shift elements greater than key to the right
-        while (j >= 0 && arr[j] > key) {
+void insertion_sort(int arr[], int n){
+    for(int i = 1; i < n; i++){
+        int key = arr[i];
+        int j = i - 1;
+        while(j >= 0 && arr[j] > key){
             arr[j + 1] = arr[j];
             j = j - 1;
         }
-
         arr[j + 1] = key;
-
-        // Print array after each pass
-        printf("Pass %d: ", i);
-        for (int k = 0; k < n; k++) {
-            printf("%d ", arr[k]);
-        }
-        printf("\n");
     }
-}
-
-int main() {
-    int n;
-    printf("Enter the number of elements in the array: ");
-    scanf("%d", &n);
-
-    int arr[n];
-    printf("Enter the elements of the array:\n");
-    for (int i = 0; i < n; i++) {
-        printf("Element %d: ", i + 1);
-        scanf("%d", &arr[i]);
-    }
-
-    printf("\nArray before sorting: ");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
-    printf("\n\n");
-
-    insertionSort(arr, n);
-
-    printf("\nArray after sorting: ");
-    for (int i = 0; i < n; i++) {
+    for(int i = 0; i < n; i++){
         printf("%d ", arr[i]);
     }
     printf("\n");
-
+}
+int main(){
+    int n;
+    scanf("%d", &n);
+    int arr[n];
+    for(int i = 0; i < n; i++){
+        scanf("%d", &arr[i]);
+    }
+    insertion_sort(arr, n);
     return 0;
 }
+/*
+Time Complexity: O(n^2)
+Space Complexity: O(1)
+*/
